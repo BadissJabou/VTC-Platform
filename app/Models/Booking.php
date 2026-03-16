@@ -45,6 +45,9 @@ class Booking extends Model
 
     public static function generateReference()
     {
-        return 'VTC-' . date('Y') . '-' . str_pad(static::count() + 1, 4, '0', STR_PAD_LEFT);
+        $lastBooking = self::latest()->first();
+        $lastNumber = $lastBooking ? (int) substr($lastBooking->reference, -4) : 0;
+        $newNumber = $lastNumber + 1;
+        return 'VTC-' . date('Y') . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
     }
 }
